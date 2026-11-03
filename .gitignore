@@ -1,0 +1,29 @@
+# Data, cached embeddings, results and API outputs are produced by the scripts and not versioned.
+data/
+embeddings/
+detection/results/
+batch_jobs/
+test_save_folder/
+
+# Model artefacts
+*.npy
+*.pkl
+*.joblib
+*.safetensors
+*.bin
+*.pt
+
+# PBS job logs (<jobname>.o<id>, <jobname>.e<id>)
+*.o[0-9]*
+*.e[0-9]*
+
+# Python / tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+.env
+.vscode/
+.idea/
+.claude/

@@ -1,0 +1,24 @@
+#!/bin/bash
+# PBS template. Edit the directives below for your cluster (queue, project,
+# storage, resource syntax; some PBS sites use -l select=1:ncpus=..:ngpus=..).
+# Submit from the repository root, e.g.:  qsub -v ... scripts/pbs/<this file>
+##PBS -q <gpu-queue>
+##PBS -P <project>
+#PBS -l ncpus=12
+#PBS -l ngpus=1
+#PBS -l mem=128g
+#PBS -l walltime=03:45:00
+
+cd "${PBS_O_WORKDIR:?submit from the repository root}"
+source "${CONDA_SH:-$HOME/miniconda3/etc/profile.d/conda.sh}"
+conda activate "${CONDA_ENV:-bft}"
+set -euo pipefail
+source scripts/common.sh
+# Compute nodes without internet: run download_models.py on a login node first, then
+#   export TRANSFORMERS_OFFLINE=1 HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1
+python --version
+
+# Variables: n=<seed> d=<dataset> m=<HF model id>
+PYTHONHASHSEED=42 python -u main_detection.py \
+    --dataset "$d" --train train --test test --exp_num "$n" \
+    --model_name "$m" --do_probes --do_translation
